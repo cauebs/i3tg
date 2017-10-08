@@ -17,3 +17,5 @@ MENTION_COLOR = config.get('mention_color', '#FF0000')
 
 UNREAD_FORMAT = config.get('unread_format', 'unread messages: {}')
 MENTION_FORMAT = config.get('mention_format', 'mentions: {}')
+
+COUNT_SILENCED = config.get('count_silenced', False)

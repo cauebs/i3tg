@@ -25,7 +25,9 @@ Example configuration:
     "mention_color": "#FF0000",
 
     "unread_format": "unread messages: {}",
-    "mention_format": "mentions: {}"
+    "mention_format": "mentions: {}",
+
+    "count_silenced": false
 }
 ```
 

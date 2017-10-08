@@ -26,7 +26,9 @@ class Telegram:
 
         unread_count = sum(d.unread_count
                            for d in dialogs
-                           if not d.notify_settings.silent)
+                           if config.COUNT_SILENCED or
+                           not (d.notify_settings.silent or
+                                d.notify_settings.mute_until))
 
         mention_count = sum(d.unread_mentions_count
                             for d in dialogs)
