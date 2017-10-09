@@ -1,6 +1,8 @@
 import sys
 import json
 
+from threading import Thread
+
 from .telegram import Telegram
 
 
@@ -25,18 +27,28 @@ def auth():
 
 
 def poll():
-    tg = Telegram()
+    print_line(read_line())
+    print_line(read_line())
 
-    print_line(read_line())
-    print_line(read_line())
+    tg = None
+    while not tg:
+        try:
+            tg = Telegram()
+        except:
+            print_line(read_line())
+
+    Thread(target=tg.poll).start()
 
     while True:
-        line, prefix = read_line(), ''
+        prefix, line = '', read_line()
         if line.startswith(','):
-            line, prefix = line[1:], ','
+            prefix, line = ',', line[1:]
 
         j = json.loads(line)
-        print_line(prefix + json.dumps(tg.unread() + j))
+        output = tg.unread + j
+        output = prefix + json.dumps(output)
+
+        print_line(output)
 
 
 if __name__ == '__main__':

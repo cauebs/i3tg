@@ -1,6 +1,7 @@
 import os
 
 from getpass import getpass
+from time import sleep
 
 from telethon import TelegramClient
 from telethon.errors.rpc_errors_401 import SessionPasswordNeededError
@@ -13,6 +14,7 @@ class Telegram:
         os.chdir(config.CONFIG_DIR)
         self.client = TelegramClient('i3tg', config.API_ID, config.API_HASH)
         self.client.connect()
+        self.unread = []
 
     def auth(self):
         self.client.sign_in(phone=config.PHONE_NUMBER)
@@ -21,7 +23,7 @@ class Telegram:
         except SessionPasswordNeededError:
             self.client.sign_in(password=getpass('Pass: '))
 
-    def unread(self):
+    def fetch_unread(self):
         dialogs, entities = self.client.get_dialogs()
 
         unread_count = sum(d.unread_count
@@ -50,3 +52,11 @@ class Telegram:
             })
 
         return output
+
+    def poll(self, interval=5):
+        while True:
+            try:
+                self.unread = self.fetch_unread()
+            except:
+                continue
+            sleep(5)
